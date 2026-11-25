@@ -26,7 +26,7 @@ impl Grid {
                     grid.push(Cell {
                         state: State::ENGINE,
                         dir: Dir::Right,
-                        speed: 3,
+                        speed: 2,
                     });
                 } else {
                     grid.push(Cell {
@@ -63,9 +63,6 @@ impl Grid {
     }
 
     pub fn next_gen(&mut self) {
-        // self.next
-        //     .clone_from(&self.cells.iter().map(|c| Vec::new().push(c)).collect::Vec<Cell>());
-
         for bucket in &mut self.next {
             bucket.clear();
         }
@@ -83,12 +80,12 @@ impl Grid {
                     let ni = i as isize + dy * (el.speed as isize);
                     let nj = j as isize + dx * (el.speed as isize);
 
+                    let mut target_idx = idx;
                     if ni >= 0 && ni < HEIGHT as isize && nj >= 0 && nj < WIDTH as isize {
-                        let target_idx = (ni as usize) * WIDTH + (nj as usize);
-                        self.next[target_idx].push(el);
-                        // self.next[idx].state = State::EMPTY;
-                        // self.next[idx].push(Cell::default());
+                        target_idx = (ni as usize) * WIDTH + (nj as usize);
+                        // self.next[target_idx].push(el);
                     }
+                    self.next[target_idx].push(el);
                 }
             }
         }
@@ -107,8 +104,6 @@ impl Grid {
                 }
             }
         }
-
-        // std::mem::swap(&mut self.cells, &mut self.next);
     }
 
     pub fn loop_gens(&mut self) {
